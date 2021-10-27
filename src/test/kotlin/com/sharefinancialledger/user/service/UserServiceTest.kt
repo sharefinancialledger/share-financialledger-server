@@ -11,13 +11,15 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.BDDMockito.argThat
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.*
 
 
 class UserServiceTest {
 
     private val repository: UserRepository = Mockito.mock(UserRepository::class.java)
-    private val service = UserService(repository)
+    private val passwordEncoder: PasswordEncoder = Mockito.mock(PasswordEncoder::class.java)
+    private val service = UserService(repository, passwordEncoder)
 
     @Nested
     inner class CreateUser {
@@ -26,9 +28,10 @@ class UserServiceTest {
 
         @Test
         fun `유저를 생성한다`() {
+            given(passwordEncoder.encode(request.password)).willReturn("hasedpassword")
             given(
                     repository.save(
-                            argThat { it.email == request.email && it.password == request.password && it.name == request.name }
+                            argThat { it.email == request.email && it.password == "hasedpassword" && it.name == request.name }
                     )
             ).willReturn(user)
 
