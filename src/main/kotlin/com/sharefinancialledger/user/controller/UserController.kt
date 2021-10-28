@@ -18,6 +18,6 @@ class UserController(
     @PostMapping("/v1/user")
     fun create(@RequestBody request: CreateUserRequest): ResponseEntity<Unit> {
         service.create(request)
-        return ResponseEntity.created(URI("")).build()
+        return ResponseEntity.created(URI("")).build() // TODO 유저 정보 조회 API 개발 시 URI 넣을 예정
     }
 }
