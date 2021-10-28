@@ -39,7 +39,7 @@ class WebSecurityConfig(
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/**/user", "/api/**/authentication").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/**/users", "/api/**/authentication").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling() // TODO error Handling
