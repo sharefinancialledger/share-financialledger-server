@@ -29,10 +29,10 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
 
-    runtimeOnly("mysql:mysql-connector-java:5.1.6")
+    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("com.h2database:h2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.h2database:h2:1.3.148")
 }
 
 tasks.withType<KotlinCompile> {
