@@ -1,6 +1,7 @@
 logging:
   level:
-    org.hibernate.type: trace
+    org.hibernate.sql: debug
+    org.hibernate.type: debug
 
 spring:
   datasource:
@@ -8,13 +9,10 @@ spring:
     hikari:
       minimum-idle: 1
       maximum-pool-size: 1
-    driver-class-name: org.h2.Driver
+      driver-class-name: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate.format_sql: true
-
-
+      hibernate.hbm2ddl.auto: create-drop
