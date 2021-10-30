@@ -1,6 +1,6 @@
 package com.sharefinancialledger
 
-import com.sharefinancialledger.config.Env
+import com.sharefinancialledger.global.config.Env
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import java.util.*

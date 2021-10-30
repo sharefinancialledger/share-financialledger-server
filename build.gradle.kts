@@ -17,7 +17,6 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -29,10 +28,14 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+    implementation("io.github.microutils:kotlin-logging:1.12.5")
+
     runtimeOnly("mysql:mysql-connector-java")
     runtimeOnly("com.h2database:h2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 tasks.withType<KotlinCompile> {
