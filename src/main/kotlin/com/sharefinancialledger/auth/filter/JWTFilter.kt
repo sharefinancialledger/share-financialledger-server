@@ -1,8 +1,10 @@
 package com.sharefinancialledger.auth.filter
 
 import com.sharefinancialledger.auth.service.JWTUtil
+import com.sharefinancialledger.domain.user.entity.User
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Service
@@ -23,14 +25,18 @@ class JWTFilter(
                 ?.takeIf { authorizationHeader.startsWith("Bearer ") }
                 ?.let { authorizationHeader.substring(7) }
 
-        token?.let { jwtUtil.extractUsername(token) }
+        token?.let { jwtUtil.extractEmail(token) }
                 ?.takeIf { SecurityContextHolder.getContext().authentication == null }
                 ?.let { username -> userDetailService.loadUserByUsername(username) }
                 ?.takeIf { userDetails -> jwtUtil.validateToken(token, userDetails) }
-                ?.let { userDetails -> UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities) }
+                ?.let { userDetails -> UsernamePasswordAuthenticationToken(userDetails.toUser(token), null, userDetails.authorities) }
                 ?.apply { details = WebAuthenticationDetailsSource().buildDetails(request) }
                 ?.also { SecurityContextHolder.getContext().authentication = it }
 
         filterChain.doFilter(request, response)
+    }
+
+    private fun UserDetails.toUser(token: String): User {
+        return User(jwtUtil.extractUserId(token), username, password, jwtUtil.extractUserName(token))
     }
 }
