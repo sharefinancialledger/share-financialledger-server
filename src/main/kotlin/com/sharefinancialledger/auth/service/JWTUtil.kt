@@ -1,5 +1,6 @@
 package com.sharefinancialledger.auth.service
 
+import com.sharefinancialledger.user.repository.UserRepository
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -11,16 +12,25 @@ import java.util.*
 @Service
 class JWTUtil(
         @Value("share-financialledger.auth.jwt.secret")
-        private val secret: String
+        private val secret: String,
+        private val userRepository: UserRepository
 ) {
 
 
-    fun extractUsername(token: String): String {
+    fun extractEmail(token: String): String {
         return extractClaim(token) { it.subject }
     }
 
     fun extractExpiration(token: String): Date {
         return extractClaim(token) { it.expiration }
+    }
+
+    fun extractUserId(token: String): Int {
+        return extractClaim(token) { it.get("userId", Integer::class.java) }.toInt()
+    }
+
+    fun extractUserName(token: String): String {
+        return extractClaim(token) { it.get("name", String::class.java) }
     }
 
     fun <T> extractClaim(token: String, claimsResolver: (Claims) -> T): T {
@@ -33,7 +43,7 @@ class JWTUtil(
     }
 
     fun validateToken(token: String, user: UserDetails): Boolean {
-        return extractUsername(token) == user.username && isTokenExpired(token)
+        return extractEmail(token) == user.username && isTokenExpired(token)
     }
 
     private fun isTokenExpired(token: String): Boolean {
@@ -41,8 +51,8 @@ class JWTUtil(
     }
 
     fun generateToken(username: String): String {
-        // TODO add name
-        return createToken(mutableMapOf(), username)
+        val user = userRepository.findFirstByEmail(username).get()
+        return createToken(mutableMapOf("userId" to user.id!!, "name" to user.name), username)
     }
 
     private fun createToken(claims: MutableMap<String, Any>, username: String): String {
