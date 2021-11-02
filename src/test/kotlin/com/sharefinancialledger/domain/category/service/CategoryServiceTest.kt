@@ -18,6 +18,8 @@ class CategoryServiceTest {
     private val repository: CategoryRepository = Mockito.mock(CategoryRepository::class.java)
     private val service = CategoryService(repository)
 
+    private val userId = 100
+
     @Nested
     inner class CreateCategory {
 
@@ -44,6 +46,24 @@ class CategoryServiceTest {
                 service.create(userId, request)
             }
 
+        }
+    }
+
+    @Nested
+    inner class FindCategory {
+
+        @Test
+        fun `카테고리 목록을 조회한다`() {
+            val categories = listOf(
+                    Category(userId = userId, title = "title", transactionType = TransactionType.EXPENDITURE),
+                    Category(userId = userId, title = "title2", transactionType = TransactionType.EXPENDITURE),
+            )
+            given(repository.findByUserIdAndTransactionType(userId, TransactionType.EXPENDITURE))
+                    .willReturn(categories)
+
+            val resultCategory = service.find(userId, TransactionType.EXPENDITURE)
+
+            assertThat(resultCategory).isEqualTo(categories)
         }
     }
 }
