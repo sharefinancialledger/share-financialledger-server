@@ -14,10 +14,13 @@ class Category (
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Int? = null,
 
+        @Column(nullable = false)
         val userId: Int,
 
+        @Column(nullable = false)
         var title: String,
 
+        @Column(nullable = false)
         val transactionType: TransactionType
 
 ) {

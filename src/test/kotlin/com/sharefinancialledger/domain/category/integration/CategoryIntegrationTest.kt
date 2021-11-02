@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono
 
 class CategoryIntegrationTest : IntegrationTest() {
 
-
     @Test
     fun `카테고리 생성`() {
         val authResponse = authenticate()
@@ -61,4 +60,34 @@ class CategoryIntegrationTest : IntegrationTest() {
     }
 
 
+    @Test
+    fun `카테고리 목록 조회`() {
+        val authResponse = authenticate()
+
+        client
+                .post()
+                .uri("/api/v1/categories")
+                .header("Authorization", "Bearer ${authResponse.token}")
+                .body(Mono.just(CreateCategoryRequest("카테고리2", TransactionType.INCOME)), CreateCategoryRequest::class.java)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+
+        client
+                .get()
+                .uri {
+                    it.path("/api/v1/categories")
+                            .queryParam("transactionType", TransactionType.INCOME)
+                            .build()
+                }
+                .header("Authorization", "Bearer ${authResponse.token}")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk
+                .expectBody()
+                .jsonPath("categories").exists()
+                .jsonPath("categories[*].id").exists()
+                .jsonPath("categories[*].title").exists()
+                .jsonPath("categories[*].transactionType").exists()
+
+    }
 }
