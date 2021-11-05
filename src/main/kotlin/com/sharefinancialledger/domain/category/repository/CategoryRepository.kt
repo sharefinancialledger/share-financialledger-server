@@ -11,5 +11,9 @@ interface CategoryRepository : JpaRepository<Category, Int> {
     fun existsByUserIdAndTitle(userId: Int, title: String): Boolean
 
     @Transactional(readOnly = true)
+    fun findByIdAndUserId(id: Int, userId: Int): Category?
+
+    @Transactional(readOnly = true)
     fun findByUserIdAndTransactionType(userId: Int, transactionType: TransactionType): List<Category>
+
 }
