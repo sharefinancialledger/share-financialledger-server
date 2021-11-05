@@ -2,6 +2,7 @@ package com.sharefinancialledger.domain.category.controller
 
 import com.sharefinancialledger.domain.category.controller.dto.CreateCategoryRequest
 import com.sharefinancialledger.domain.category.controller.dto.FindCategoriesResponse
+import com.sharefinancialledger.domain.category.controller.dto.UpdateCategoryRequest
 import com.sharefinancialledger.domain.category.service.CategoryService
 import com.sharefinancialledger.domain.user.entity.User
 import com.sharefinancialledger.global.entity.type.TransactionType
@@ -28,4 +29,14 @@ class CategoryController(
         return service.find(user.id!!, transactionType).let { FindCategoriesResponse.listOf(it) }
     }
 
+
+
+    @PatchMapping("/v1/categories/{categoryId}")
+    fun update(
+            @AuthenticationPrincipal user: User,
+            @PathVariable categoryId: Int,
+            @Valid @RequestBody request: UpdateCategoryRequest
+    ) {
+        service.update(categoryId, user.id!!, request)
+    }
 }
