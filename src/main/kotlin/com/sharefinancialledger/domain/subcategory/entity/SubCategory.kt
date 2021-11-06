@@ -16,6 +16,7 @@ class SubCategory (
 
         val userId: Int,
 
+        @Column(length = 30)
         var title: String,
 
         val categoryId: Int
