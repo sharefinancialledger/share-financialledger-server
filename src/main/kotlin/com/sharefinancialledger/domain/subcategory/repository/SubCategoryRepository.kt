@@ -15,3 +15,4 @@ interface SubCategoryRepository : JpaRepository<SubCategory, Int>{
     @Transactional(readOnly = true)
     fun findAllByUserId(userId: Int): List<SubCategory>
 }
+}
