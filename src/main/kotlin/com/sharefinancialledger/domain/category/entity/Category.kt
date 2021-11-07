@@ -21,18 +21,30 @@ class Category (
         var title: String,
 
         @Column(nullable = false)
-        val transactionType: TransactionType
+        val transactionType: TransactionType,
 
+        @Column(columnDefinition = "tinyint(1) not null default 0", nullable = false)
+        var isDelete: Boolean = false
 ) {
-
-    @PrePersist
-    fun prePersist() {
-        if (title.length > 30) throw IllegalArgumentException("카테고리명은 최대 30글자까지 가능합니다.")
-    }
 
     @CreatedDate
     lateinit var createdAt: LocalDateTime
 
     @LastModifiedDate
     lateinit var modifiedAt: LocalDateTime
+
+
+    @PrePersist
+    fun prePersist() {
+        if (title.length > 30) throw IllegalArgumentException("카테고리명은 최대 30글자까지 가능합니다.")
+    }
+
+    @Transient
+    fun isOwn(userId: Int) = this.userId == userId
+
+    @Transient
+    fun delete() {
+        isDelete = true
+    }
+
 }
