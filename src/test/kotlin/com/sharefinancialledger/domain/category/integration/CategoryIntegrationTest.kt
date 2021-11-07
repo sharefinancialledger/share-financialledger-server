@@ -66,6 +66,30 @@ class CategoryIntegrationTest : IntegrationTest() {
     }
 
     @Test
+    fun `카테고리 삭제`() {
+        val authResponse = authenticate()
+
+        client
+                .post()
+                .uri("/api/v1/categories")
+                .header("Authorization", "Bearer ${authResponse.token}")
+                .body(Mono.just(CreateCategoryRequest("삭제할 카테고리", TransactionType.EXPENDITURE)), CreateCategoryRequest::class.java)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+
+        val categories = categoryRepository.findAll()
+        categories.sortByDescending { it.id }
+
+        client
+                .delete()
+                .uri("/api/v1/categories/${categories.first().id!!}")
+                .header("Authorization", "Bearer ${authResponse.token}")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk
+    }
+
+    @Test
     fun `카테고리 수정`() {
         val authResponse = authenticate()
 

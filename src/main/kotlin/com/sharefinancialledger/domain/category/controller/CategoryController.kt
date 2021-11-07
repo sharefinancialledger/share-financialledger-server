@@ -39,4 +39,10 @@ class CategoryController(
     ) {
         service.update(categoryId, user.id!!, request)
     }
+
+    @DeleteMapping("/v1/categories/{categoryId}")
+    fun delete(@AuthenticationPrincipal user: User, @PathVariable categoryId: Int) {
+        service.delete(categoryId, user.id!!)
+    }
+
 }
