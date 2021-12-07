@@ -31,4 +31,5 @@ class SubCategoryRepositoryTest:RepositoryTest() {
             repository.save(SubCategory(userId = 100, title="1234567890123456789012345678901", categoryId = 10))
         }
     }
+
 }
