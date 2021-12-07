@@ -32,7 +32,6 @@ class CategoryController(
         val category = service.create(user.id!!, request)
         return ResponseEntity.created(URI("/api/v1/categories/${category.id}")).build()
     }
-
     @PatchMapping("/v1/categories/{categoryId}")
     fun update(
             @AuthenticationPrincipal user: User,
