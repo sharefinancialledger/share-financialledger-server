@@ -1,6 +1,6 @@
 package com.sharefinancialledger.global.exception.advice
 
-import com.sharefinancialledger.global.dto.ErrorResponse
+import com.sharefinancialledger.global.controller.dto.ErrorResponse
 import com.sharefinancialledger.global.exception.CustomException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,7 +23,8 @@ class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handle(e: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
         logger.warn { e }
-        return ResponseEntity(ErrorResponse(e.bindingResult.allErrors.first().defaultMessage
+        return ResponseEntity(
+            ErrorResponse(e.bindingResult.allErrors.first().defaultMessage
                 ?: "잘못된 요청입니다."), HttpStatus.BAD_REQUEST)
     }
 

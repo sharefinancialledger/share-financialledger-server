@@ -24,13 +24,13 @@ class SubCategory (
 
 ) {
 
+    var deletedAt: LocalDateTime? = null
+
     @CreatedDate
     lateinit var createdAt: LocalDateTime
 
     @LastModifiedDate
     lateinit var modifiedAt: LocalDateTime
-
-    lateinit var deletedAt: LocalDateTime
 
     @PrePersist
     fun prePersist() {

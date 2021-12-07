@@ -50,6 +50,7 @@ class Category (
     @Transient
     fun isOwn(userId: Int) = this.userId == userId
 
+    @Transient
     fun raiseIfIsNotOwn(userId: Int) {
         if (!isOwn(userId)) throw AuthorizationException("접근할 수 없는 카테고리입니다.")
     }
