@@ -55,6 +55,11 @@ class Category (
     }
 
     @Transient
+    fun raiseIfIsNotOwn() {
+        if (!isOwn(userId)) throw AuthorizationException("접근할 수 없는 카테고리입니다.")
+    }
+
+    @Transient
     fun delete() {
         isDelete = true
     }
