@@ -1,16 +1,17 @@
 package com.sharefinancialledger.domain.subcategory.service
 
+import com.sharefinancialledger.common.argThat
 import com.sharefinancialledger.domain.category.controller.dto.CreateCategoryRequest
 import com.sharefinancialledger.domain.category.entity.Category
 import com.sharefinancialledger.domain.category.repository.CategoryRepository
 import com.sharefinancialledger.domain.subcategory.controller.dto.CreateSubCategoryRequest
+import com.sharefinancialledger.domain.subcategory.controller.dto.UpdateInfoRequest
 import com.sharefinancialledger.domain.subcategory.entity.SubCategory
 import com.sharefinancialledger.domain.subcategory.repository.SubCategoryRepository
 import com.sharefinancialledger.global.entity.type.TransactionType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.argThat
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 
@@ -33,6 +34,35 @@ class SubCategoryServiceTest {
 
             val resultCategory = service.create(userId, request)
             assertThat(resultCategory).isEqualTo(subCategory)
+        }
+
+        @Test
+        fun `return subcategories by userId`() {
+            var userId = 1
+            val subCategories = ArrayList<SubCategory>()
+            subCategories.add(SubCategory(userId = userId, title = "testOne", categoryId = 1))
+            subCategories.add(SubCategory(userId = userId, title = "testTwo", categoryId = 1))
+
+            given(repository.findAllByUserId(userId))
+                    .willReturn(subCategories)
+
+            val resultCategory = service.get(userId)
+            assertThat(resultCategory[0]).isEqualTo(subCategories[0])
+            assertThat(resultCategory[1]).isEqualTo(subCategories[1])
+
+        }
+
+        @Test
+        fun `update title in subCategoryEntity`() {
+            val subCategoryId = 1
+            val targetSubCategoryTitle = "target subcategory"
+            val beforeUpdateSubCateogry = SubCategory(id = 1, userId = 1, title = "source subcategory", categoryId = 1)
+            given(repository.getById(userId))
+                    .willReturn(beforeUpdateSubCateogry)
+            val afterUpdateSubCategory = service.update(subCategoryId, UpdateInfoRequest(targetSubCategoryTitle))
+
+            beforeUpdateSubCateogry.title = targetSubCategoryTitle
+            assertThat(afterUpdateSubCategory).isEqualTo(SubCategory(beforeUpdateSubCateogry.id, beforeUpdateSubCateogry.userId, targetSubCategoryTitle, beforeUpdateSubCateogry.categoryId))
         }
     }
 }
