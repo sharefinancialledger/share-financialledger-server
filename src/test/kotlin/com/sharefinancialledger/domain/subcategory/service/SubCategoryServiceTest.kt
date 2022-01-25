@@ -20,49 +20,46 @@ class SubCategoryServiceTest {
     private val repository: SubCategoryRepository = Mockito.mock(SubCategoryRepository::class.java)
     private val service = SubCategoryService(repository)
 
-    @Nested
-    inner class CreateSubCategory {
 
-        private val userId = 100
+    private val userId = 100
 
-        @Test
-        fun `서브카테고리를 생성한다`() {
-            val request = CreateSubCategoryRequest("카테고리", 10)
-            val subCategory = SubCategory(userId = userId, title = request.title, categoryId = request.category)
-            given(repository.save(argThat { it.userId == userId && it.title == request.title && it.categoryId == request.category }))
-                    .willReturn(subCategory)
+    @Test
+    fun `서브카테고리를 생성한다`() {
+        val request = CreateSubCategoryRequest("카테고리", 10)
+        val subCategory = SubCategory(userId = userId, title = request.title, categoryId = request.category)
+        given(repository.save(argThat { it.userId == userId && it.title == request.title && it.categoryId == request.category }))
+                .willReturn(subCategory)
 
-            val resultCategory = service.create(userId, request)
-            assertThat(resultCategory).isEqualTo(subCategory)
-        }
+        val resultCategory = service.create(userId, request)
+        assertThat(resultCategory).isEqualTo(subCategory)
+    }
 
-        @Test
-        fun `return subcategories by userId`() {
-            var userId = 1
-            val subCategories = ArrayList<SubCategory>()
-            subCategories.add(SubCategory(userId = userId, title = "testOne", categoryId = 1))
-            subCategories.add(SubCategory(userId = userId, title = "testTwo", categoryId = 1))
+    @Test
+    fun `return subcategories by userId`() {
+        var userId = 1
+        val subCategories = ArrayList<SubCategory>()
+        subCategories.add(SubCategory(userId = userId, title = "testOne", categoryId = 1))
+        subCategories.add(SubCategory(userId = userId, title = "testTwo", categoryId = 1))
 
-            given(repository.findAllByUserId(userId))
-                    .willReturn(subCategories)
+        given(repository.findAllByUserId(userId))
+                .willReturn(subCategories)
 
-            val resultCategory = service.get(userId)
-            assertThat(resultCategory[0]).isEqualTo(subCategories[0])
-            assertThat(resultCategory[1]).isEqualTo(subCategories[1])
+        val resultCategory = service.get(userId)
+        assertThat(resultCategory[0]).isEqualTo(subCategories[0])
+        assertThat(resultCategory[1]).isEqualTo(subCategories[1])
 
-        }
+    }
 
-        @Test
-        fun `update title in subCategoryEntity`() {
-            val subCategoryId = 1
-            val targetSubCategoryTitle = "target subcategory"
-            val beforeUpdateSubCateogry = SubCategory(id = 1, userId = 1, title = "source subcategory", categoryId = 1)
-            given(repository.getById(userId))
-                    .willReturn(beforeUpdateSubCateogry)
-            val afterUpdateSubCategory = service.update(subCategoryId, UpdateInfoRequest(targetSubCategoryTitle))
+    @Test
+    fun `update title in subCategoryEntity`() {
+        val subCategoryId = 1
+        val targetSubCategoryTitle = "target subcategory"
+        val beforeUpdateSubCateogry = SubCategory(id = 1, userId = 1, title = "source subcategory", categoryId = 1)
+        given(repository.getById(subCategoryId))
+                .willReturn(beforeUpdateSubCateogry)
+        val afterUpdateSubCategory = service.update(subCategoryId, UpdateInfoRequest(targetSubCategoryTitle))
 
-            beforeUpdateSubCateogry.title = targetSubCategoryTitle
-            assertThat(afterUpdateSubCategory).isEqualTo(SubCategory(beforeUpdateSubCateogry.id, beforeUpdateSubCateogry.userId, targetSubCategoryTitle, beforeUpdateSubCateogry.categoryId))
-        }
+        beforeUpdateSubCateogry.title = targetSubCategoryTitle
+        assertThat(afterUpdateSubCategory).isEqualTo(beforeUpdateSubCateogry)
     }
 }
