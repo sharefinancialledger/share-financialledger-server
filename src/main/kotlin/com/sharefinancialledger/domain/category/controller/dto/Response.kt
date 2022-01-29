@@ -9,7 +9,7 @@ data class FindCategoriesResponse(
 ) {
     companion object {
         fun listOf(categories: List<Category>): FindCategoriesResponse {
-            return FindCategoriesResponse(categories.map { CategoryResponse.of(it) })
+            return FindCategoriesResponse(categories.map { CategoryResponse.from(it) })
         }
     }
 }
@@ -24,7 +24,7 @@ data class CategoryResponse(
         val transactionType: TransactionType
 ) {
     companion object {
-        fun of(category: Category) = CategoryResponse(
+        fun from(category: Category) = CategoryResponse(
                 id = category.id!!,
                 title = category.title,
                 transactionType = category.transactionType
