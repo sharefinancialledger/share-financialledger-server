@@ -5,25 +5,29 @@ import com.sharefinancialledger.global.entity.type.TransactionType
 
 
 data class FindCategoriesResponse(
-        val categories: List<CategoryElement>
+        val categories: List<CategoryResponse>
 ) {
-    data class CategoryElement(
-            val id: Int,
-            val title: String,
-            val transactionType: TransactionType
-    ) {
-        companion object {
-            fun of(category: Category) = CategoryElement(
-                    id = category.id!!,
-                    title = category.title,
-                    transactionType = category.transactionType
-            )
-        }
-    }
-
     companion object {
         fun listOf(categories: List<Category>): FindCategoriesResponse {
-            return FindCategoriesResponse(categories.map { CategoryElement.of(it) })
+            return FindCategoriesResponse(categories.map { CategoryResponse.of(it) })
         }
+    }
+}
+
+data class FindCategoryResponse(
+        val category: CategoryResponse
+)
+
+data class CategoryResponse(
+        val id: Int,
+        val title: String,
+        val transactionType: TransactionType
+) {
+    companion object {
+        fun of(category: Category) = CategoryResponse(
+                id = category.id!!,
+                title = category.title,
+                transactionType = category.transactionType
+        )
     }
 }

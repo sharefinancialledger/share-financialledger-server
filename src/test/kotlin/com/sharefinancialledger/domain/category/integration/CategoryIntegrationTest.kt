@@ -2,6 +2,7 @@ package com.sharefinancialledger.domain.category.integration
 
 import com.sharefinancialledger.base.IntegrationTest
 import com.sharefinancialledger.domain.category.controller.dto.CreateCategoryRequest
+import com.sharefinancialledger.domain.category.controller.dto.FindCategoriesResponse
 import com.sharefinancialledger.domain.category.controller.dto.UpdateCategoryRequest
 import com.sharefinancialledger.domain.category.repository.CategoryRepository
 import com.sharefinancialledger.global.entity.type.TransactionType
@@ -126,7 +127,7 @@ class CategoryIntegrationTest : IntegrationTest() {
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
 
-        client
+        val response = client
                 .get()
                 .uri {
                     it.path("/api/v1/categories")
@@ -138,10 +139,26 @@ class CategoryIntegrationTest : IntegrationTest() {
                 .exchange()
                 .expectStatus().isOk
                 .expectBody()
-                .jsonPath("categories").exists()
-                .jsonPath("categories[*].id").exists()
-                .jsonPath("categories[*].title").exists()
-                .jsonPath("categories[*].transactionType").exists()
+                .apply {
+                    jsonPath("categories").exists()
+                    jsonPath("categories[*].id").exists()
+                    jsonPath("categories[*].title").exists()
+                    jsonPath("categories[*].transactionType").exists()
+                }
+                .returnResult()
+                .responseBody
+                .let { objectMapper.readValue(it, FindCategoriesResponse::class.java) }
+
+        client
+                .get()
+                .uri("/api/v1/categories/${response.categories.first().id}")
+                .header("Authorization", "Bearer ${authResponse.token}")
+                .exchange()
+                .expectStatus().isOk
+                .expectBody()
+                .jsonPath("category.id").exists()
+                .jsonPath("category.title").exists()
+                .jsonPath("category.transactionType").exists()
 
     }
 }

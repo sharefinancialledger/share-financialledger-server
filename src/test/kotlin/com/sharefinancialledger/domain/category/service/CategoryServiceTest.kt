@@ -59,7 +59,7 @@ class CategoryServiceTest {
         @Test
         fun `카테고리를 수정한다`() {
             val category = Category(200, userId, "카테고리다앙", TransactionType.EXPENDITURE)
-            given(repository.findByIdAndUserId(category.id!!, userId)).willReturn(category)
+            given(repository.findById(category.id!!)).willReturn(Optional.of(category))
             service.update(category.id!!, userId, request)
         }
 
@@ -107,7 +107,7 @@ class CategoryServiceTest {
             val categoryId = 700
             given(repository.findById(categoryId)).willReturn(Optional.empty())
 
-            assertThrows<BadRequestException> {
+            assertThrows<NotFoundException> {
                 service.delete(categoryId, userId)
             }
         }
