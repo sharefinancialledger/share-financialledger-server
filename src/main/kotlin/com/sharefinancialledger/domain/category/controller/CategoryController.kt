@@ -29,8 +29,8 @@ class CategoryController(
 
     @PostMapping("/v1/categories")
     fun create(@AuthenticationPrincipal user: User, @Valid @RequestBody request: CreateCategoryRequest): ResponseEntity<Unit> {
-        service.create(user.id!!, request)
-        return ResponseEntity.created(URI("")).build() // TODO 카테고리 정보 조회 API 개발 시 URI 넣을 예정
+        val category = service.create(user.id!!, request)
+        return ResponseEntity.created(URI("/api/v1/categories/${category.id}")).build()
     }
 
     @PatchMapping("/v1/categories/{categoryId}")
@@ -54,7 +54,7 @@ class CategoryController(
 
     @GetMapping("/v1/categories/{categoryId}")
     fun find(@AuthenticationPrincipal user: User, @PathVariable categoryId: Int): FindCategoryResponse {
-        return FindCategoryResponse(CategoryResponse.of(service.findOwn(categoryId, user.id!!)))
+        return FindCategoryResponse(CategoryResponse.from(service.findOwn(categoryId, user.id!!)))
     }
 
 }
