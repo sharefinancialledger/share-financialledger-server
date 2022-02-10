@@ -14,9 +14,6 @@ class SubCategoryService(private val repository: SubCategoryRepository) {
         return repository.save(SubCategory(userId = userId, title = request.title, categoryId = request.category))
 
     }
-    fun get(userId: Int): List<SubCategory> {
-        return repository.findAllByUserId(userId)
-    }
 
     fun update(userId: Int, subCategoryId: Int, request: UpdateInfoRequest): SubCategory {
         val subCategory = findOwn(subCategoryId, userId)
