@@ -1,6 +1,7 @@
 package com.sharefinancialledger.domain.subcategory.entity
 
 import com.sharefinancialledger.global.entity.type.TransactionType
+import com.sharefinancialledger.global.exception.AuthorizationException
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
@@ -28,4 +29,11 @@ class SubCategory (
 
     @LastModifiedDate
     lateinit var modifiedAt: LocalDateTime
+
+    lateinit var deletedAt: LocalDateTime
+
+    @Transient
+    fun delete() {
+        deletedAt = LocalDateTime.now()
+    }
 }
