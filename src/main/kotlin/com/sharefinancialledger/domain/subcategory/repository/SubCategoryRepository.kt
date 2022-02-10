@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 interface SubCategoryRepository : JpaRepository<SubCategory, Int>{
 
     @Transactional(readOnly = true)
-    fun existsByUserIdAndCategoryId(userId: Int, categoryId: Int): Boolean?
+    fun existsByUserIdAndCategoryId(userId: Int, categoryId: Int): Boolean
 
     @Transactional(readOnly = true)
     fun existsByUserIdAndCategoryIdAndTitle(userId: Int, categoryId: Int, title: String): Boolean?
