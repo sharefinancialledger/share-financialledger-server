@@ -32,6 +32,18 @@ class SubCategory (
 
     lateinit var deletedAt: LocalDateTime
 
+    @PrePersist
+    fun prePersist() {
+        if (title.length > 30) throw IllegalArgumentException("서브카테고리명은 최대 30글자까지 가능합니다.")
+    }
+
+    @Transient
+    fun isOwn(userId: Int) = this.userId == userId
+
+    fun raiseIfIsNotOwn(userId: Int) {
+        if (!isOwn(userId)) throw AuthorizationException("접근할 수 없는 서브카테고리입니다.")
+    }
+
     @Transient
     fun delete() {
         deletedAt = LocalDateTime.now()

@@ -29,11 +29,11 @@ class SubCategoryController(
 
     @PatchMapping("/v1/subcategories/{subCategoryId}")
     fun updateInfo(@AuthenticationPrincipal user: User, @RequestBody request: UpdateInfoRequest, @PathVariable subCategoryId: Int): SubCategory {
-        return service.update(subCategoryId, request)
+        return service.update(user.id!!, subCategoryId, request)
     }
 
     @DeleteMapping("/v1/subcategories/{subCategoryId}")
     fun delete(@AuthenticationPrincipal user:User, @PathVariable subCategoryId: Int): Unit {
-        service.delete(subCategoryId)
+        service.delete(user.id!!, subCategoryId)
     }
 }
