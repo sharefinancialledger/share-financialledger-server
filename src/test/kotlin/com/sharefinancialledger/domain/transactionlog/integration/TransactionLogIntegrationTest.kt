@@ -32,7 +32,6 @@ class TransactionLogIntegrationTest : IntegrationTest() {
                 .expectStatus().isCreated
                 .expectBody().isEmpty
 
-
         val category = categoryRepository.findAll().first { it.title == "월급" }
 
         val request = CreateTransactionLogRequest(

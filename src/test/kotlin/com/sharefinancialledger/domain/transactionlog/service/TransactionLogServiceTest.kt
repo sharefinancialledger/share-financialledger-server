@@ -26,7 +26,7 @@ internal class TransactionLogServiceTest {
         val request = CreateTransactionLogRequest(today, "떡볶이", 3000, 200)
 
         val category = Category(300, userId, "식사", TransactionType.EXPENDITURE)
-        given(categoryService.findCategoryOrRaiseIfNotExist(request.categoryId, userId))
+        given(categoryService.findOwn(request.categoryId, userId))
                 .willReturn(category)
 
         service.create(userId, request)

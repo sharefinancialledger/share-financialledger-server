@@ -13,8 +13,7 @@ class TransactionLogService(
 ) {
 
     fun create(userId: Int, request: CreateTransactionLogRequest) {
-        val category = categoryService.findCategoryOrRaiseIfNotExist(request.categoryId, userId)
-        category.raiseIfIsNotOwn()
+        val category = categoryService.findOwn(request.categoryId, userId)
         return TransactionLog(
                 userId = userId,
                 date = request.date,
