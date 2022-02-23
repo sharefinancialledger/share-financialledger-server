@@ -25,11 +25,4 @@ class SubCategoryRepositoryTest:RepositoryTest() {
                 .returns("sub category") { it.title }
     }
 
-    @Test
-    fun `do not create subcategory when title is bigger then 30 -- should throw DataIntegrityViolationException`(){
-        assertThrows<DataIntegrityViolationException> {
-            repository.save(SubCategory(userId = 100, title="1234567890123456789012345678901", categoryId = 10))
-        }
-    }
-
 }
