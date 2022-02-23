@@ -36,21 +36,21 @@ class SubCategoryServiceTest {
         assertThat(resultCategory).isEqualTo(subCategory)
     }
 
-    @Test
-    fun `return subcategory by userId and subCategoryId`() {
-        var userId = 1
-        val subCategories = ArrayList<SubCategory>()
-        subCategories.add(SubCategory(id=0,userId = userId, title = "testOne", categoryId = 1))
-        subCategories.add(SubCategory(id=1, userId = userId, title = "testTwo", categoryId = 1))
-
-        given(repository.findById(0))
-                .willReturn(Optional.of(subCategories[0]))
-        given(repository.findById(1))
-                .willReturn(Optional.of(subCategories[1]))
-
-        val resultSubCategory = service.findOwn(0, userId)
-        assertThat(resultSubCategory).isEqualTo(subCategories[0])
-    }
+//    @Test
+//    fun `return subcategory by userId and subCategoryId`() {
+//        var userId = 1
+//        val subCategories = ArrayList<SubCategory>()
+//        subCategories.add(SubCategory(id=0,userId = userId, title = "testOne", categoryId = 1))
+//        subCategories.add(SubCategory(id=1, userId = userId, title = "testTwo", categoryId = 1))
+//
+//        given(repository.findById(0))
+//                .willReturn(Optional.of(subCategories[0]))
+//        given(repository.findById(1))
+//                .willReturn(Optional.of(subCategories[1]))
+//
+//        val resultSubCategory = service.findOwn(0, userId)
+//        assertThat(resultSubCategory).isEqualTo(subCategories[0])
+//    }
 
     @Test
     fun `update title in subCategoryEntity`() {
