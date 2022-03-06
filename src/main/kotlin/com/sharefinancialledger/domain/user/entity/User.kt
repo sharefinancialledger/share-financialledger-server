@@ -18,7 +18,12 @@ class User(
 
         var password: String, // TODO hashing
 
-        var name: String
+        var name: String,
+
+        @ManyToMany(cascade=[CascadeType.ALL])
+        @JoinColumn(name="USER_ID")
+        val friends:Set<User> = mutableSetOf<User>(),
+
 ) {
 
     @CreatedDate
