@@ -13,10 +13,14 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
+    maven {
+        url = uri("https://jitpack.io")
+    }
     mavenCentral()
 }
 
 dependencies {
+    implementation("com.github.KenjiOhtsuka:harmonica:2.0.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -36,6 +40,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation(kotlin("script-runtime"))
 }
 
 tasks.withType<KotlinCompile> {
@@ -56,3 +61,6 @@ tasks.withType<Test> {
 allOpen {
     annotation("javax.persistence.Entity")
 }
+
+extensions.extraProperties["directoryPath"] =
+        "src/main/kotlin/sharefinancialledger/global/db"
