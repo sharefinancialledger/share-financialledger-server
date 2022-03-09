@@ -3,6 +3,7 @@ package com.sharefinancialledger.domain.transactionlog.service
 import com.sharefinancialledger.domain.category.service.CategoryService
 import com.sharefinancialledger.domain.subcategory.service.SubCategoryService
 import com.sharefinancialledger.domain.transactionlog.controller.dto.CreateTransactionLogRequest
+import com.sharefinancialledger.domain.transactionlog.controller.dto.FindTransactionLogRequest
 import com.sharefinancialledger.domain.transactionlog.entity.TransactionLog
 import com.sharefinancialledger.domain.transactionlog.repository.TransactionLogRepository
 import org.springframework.stereotype.Service
@@ -22,9 +23,13 @@ class TransactionLogService(
             date = request.date,
             name = request.name,
             amount = request.amount
-        ).apply {
-            this.category = category
-            this.subcategory = subCategory
+        ).also {
+            it.category = category
+            it.subCategory = subCategory
         }.let { repository.save(it) }
+    }
+
+    fun findAll(userId: Int, request: FindTransactionLogRequest): List<TransactionLog> {
+        return repository.findAllByUserIdAndDateBetweenOrderByDateDesc(userId, request.startDate, request.endDate)
     }
 }

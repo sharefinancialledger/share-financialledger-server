@@ -2,6 +2,7 @@ logging:
   level:
     org.hibernate.sql: debug
     org.hibernate.type: trace
+    reactor.netty.http.client: debug
 
 spring:
   test:
