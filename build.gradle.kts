@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+apply(from="com.github.KenjiOhtsuka:harmonica:2.0.0")
 
 plugins {
     id("org.springframework.boot") version "2.5.5"
