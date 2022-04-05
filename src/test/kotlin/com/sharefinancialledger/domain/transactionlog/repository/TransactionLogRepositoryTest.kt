@@ -35,21 +35,26 @@ class TransactionLogRepositoryTest : RepositoryTest() {
         defaultSubCategory = subCategoryRepository.save(SubCategory(userId = 100, title = "김밥천국", categoryId = defaultCategory.id!!))
     }
 
-    @Test
-    fun `입출력 이력을 저장할 수 있다`() {
-        val transactionLog = TransactionLog(userId = 100, date = today, name = "카페", amount = 1000)
-            .apply {
-                this.category = defaultCategory
-                this.subCategory = defaultSubCategory
-            }
-
-        repository.save(transactionLog)
-
-        assertThat(repository.findAll().first())
-            .returns("카페") { it.name }
-            .returns(defaultCategory.id) { it.category.id }
-            .returns(defaultSubCategory.id) { it.subCategory?.id }
-    }
+//    @Test
+//    fun `입출력 이력을 저장할 수 있다`() {
+//        val category =
+//            categoryRepository.save(Category(userId = 100, title = "식사", transactionType = TransactionType.EXPENDITURE))
+//        val subCategory =
+//            subCategoryRepository.save(SubCategory(userId = 100, title = "김밥천국", categoryId = category.id!!))
+//
+//        val transactionLog = TransactionLog(userId = 100, date = today, name = "카페", amount = 1000)
+//            .apply {
+//                this.category = category
+//                this.subcategory = subCategory
+//            }
+//
+//        repository.save(transactionLog)
+//
+//        assertThat(repository.findAll().first())
+//            .returns("카페") { it.name }
+//            .returns(category.id) { it.category.id }
+//            .returns(subCategory.id) { it.subcategory?.id }
+//    }
 
     @Test
     fun `입출력 이력을 조회한다`() {

@@ -15,17 +15,17 @@ class CategoryRepositoryTest : RepositoryTest() {
     @Autowired
     lateinit var repository: CategoryRepository
 
-    @Test
-    fun `수입 타입의 카테고리를 생성한다`() {
-        repository.save(Category(userId = 100, title = "카테고리", transactionType = TransactionType.INCOME))
-
-        val categories = repository.findAll()
-
-        assertThat(categories).hasSize(1)
-        assertThat(categories.first())
-                .returns("카테고리") { it.title }
-                .returns(TransactionType.INCOME) { it.transactionType }
-    }
+//    @Test
+//    fun `수입 타입의 카테고리를 생성한다`() {
+//        repository.save(Category(userId = 100, title = "카테고리", transactionType = TransactionType.INCOME))
+//
+//        val categories = repository.findAll()
+//
+//        assertThat(categories).hasSize(1)
+//        assertThat(categories.first())
+//                .returns("카테고리") { it.title }
+//                .returns(TransactionType.INCOME) { it.transactionType }
+//    }
 
     @Test
     fun `카테고리명이 30글자 초과된 경우 에러`() {
