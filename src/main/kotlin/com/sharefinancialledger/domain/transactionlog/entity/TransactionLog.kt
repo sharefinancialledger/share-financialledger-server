@@ -49,7 +49,7 @@ class TransactionLog(
 
     @JoinColumn(name = "sub_categody_id", referencedColumnName = "id", foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @ManyToOne(targetEntity = SubCategory::class, fetch = FetchType.LAZY)
-    var subcategory: SubCategory? = null
+    var subCategory: SubCategory? = null
 
     @CreatedDate
     lateinit var createdAt: LocalDateTime

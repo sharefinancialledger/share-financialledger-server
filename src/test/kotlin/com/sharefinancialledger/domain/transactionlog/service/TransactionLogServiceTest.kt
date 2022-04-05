@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.argThat
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import java.time.LocalDate
 
 internal class TransactionLogServiceTest {
@@ -47,7 +46,7 @@ internal class TransactionLogServiceTest {
         val subCategory = SubCategory(201, userId, "bhc", 200)
         given(subCategoryService.findOwn(request.subCategoryId!!, userId)).willReturn(subCategory)
 
-        given(repository.save(argThat { it.date == request.date && it.name == request.name && it.category.id == category.id && it.subcategory?.id == subCategory.id }))
+        given(repository.save(argThat { it.date == request.date && it.name == request.name && it.category.id == category.id && it.subCategory?.id == subCategory.id }))
             .willReturn(TransactionLog(userId = userId, date = today, name = "식사", amount = 3000))
     }
 }
